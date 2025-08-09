@@ -41,7 +41,7 @@ jobs:
         if: ${{ matrix.file_tag.setup-qemu }}
         uses: docker/setup-qemu-action@v3
 
-      # Install the cosign tool except on PR
+# Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
@@ -57,7 +57,6 @@ jobs:
         with:
           platforms: |
             linux/amd64
-            linux/arm64
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -87,13 +86,12 @@ jobs:
           file: ${{ matrix.file_tag.file }}
           platforms: |
             linux/amd64
-            linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
+      
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
       # repository is public to avoid leaking data.  If you would like to publish
